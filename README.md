@@ -1,6 +1,6 @@
 ### Getting started
 
-You need to have `go` installed in your machine to run this app. Execute `go run cmd/main.go` to start the server on port `3000`.
+You need to have `go` & `mongodb` installed in your machine to run this app. Execute `go run cmd/main.go` to start the server on port `3000`.
 
 ### Available routes
 

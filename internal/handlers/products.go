@@ -7,6 +7,7 @@ import (
 	"example.com/go-api-server/internal/db"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -72,4 +73,38 @@ func CreateProduct(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(product)
+}
+
+func GetAllProducts(c *fiber.Ctx) error {
+	client, err := db.GetMongoClient()
+
+	var products []*Product
+
+	if err != nil {
+		return err
+	}
+
+	collection := client.Database(db.Database).Collection(string(db.ProductsCollection))
+
+	cur, err := collection.Find(context.TODO(), bson.D{
+		primitive.E{},
+	})
+
+	if err != nil {
+		return err
+	}
+
+	for cur.Next(context.TODO()) {
+		var p Product
+		err := cur.Decode(&p)
+
+		if err != nil {
+			return err
+		}
+
+		products = append(products, &p)
+	}
+
+	return c.JSON(products)
+
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"example.com/go-api-server/internal/handlers"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -16,6 +17,8 @@ func main() {
 	app := fiber.New()
 
 	app.Get("/healthcheck", healthcheck)
+
+	app.Post("/api/products", handlers.CreateProduct)
 
 	fmt.Println("Hello, World!")
 
